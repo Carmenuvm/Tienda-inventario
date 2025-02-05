@@ -29,7 +29,6 @@ const addFavorite = async (req, res) => {
 };
 
 module.exports = { addFavorite };
-// controllers/userController.js
 const updateProfile = async (req, res) => {
   const { nombre, apellido, direccion, telefono } = req.body;
   const userId = req.user.id;
