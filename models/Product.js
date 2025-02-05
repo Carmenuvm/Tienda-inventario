@@ -5,7 +5,7 @@ const productSchema = new mongoose.Schema({
   descripcion: { type: String, required: true },
   precio: { type: Number, required: true },
   cantidad: { type: Number, required: true },
-  imagen: { type: String, required: true },
+  imagen: { type: Buffer, required: true }, // Cambiado a Buffer
   categoria: { type: String, required: true },
 });
 
