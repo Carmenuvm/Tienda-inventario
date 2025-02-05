@@ -1,4 +1,5 @@
 const express = require('express');
+const multer = require('multer');
 const Product = require('../models/Product');
 const { authMiddleware, isAdmin } = require('../middleware/authMiddleware');
 const router = express.Router();
@@ -27,16 +28,20 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// Crear un nuevo producto (requiere ser admin)
-router.post('/', isAdmin, async (req, res) => {
-  const { nombre, descripcion, precio, cantidad, imagen, categoria } = req.body;
-  const product = new Product({ nombre, descripcion, precio, cantidad, imagen, categoria });
+// Configuración de multer para almacenar en memoria
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
+
+// Ruta para crear un producto con carga de imagen
+router.post('/', isAdmin, upload.single('imagen'), async (req, res) => {
+  const { nombre, descripcion, precio, cantidad, categoria } = req.body;
+  const imagen = req.file ? req.file.buffer : null; // Leer el buffer de la imagen
 
   try {
-    const newProduct = await product.save();
-    res.status(201).json(newProduct);
+    const product = await Product.create({ nombre, descripcion, precio, cantidad, imagen, categoria });
+    res.status(201).json(product);
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.status(400).json({ message: 'Error al crear el producto', error: error.message });
   }
 });
 
