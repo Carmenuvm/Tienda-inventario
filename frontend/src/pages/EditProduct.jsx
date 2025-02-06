@@ -33,9 +33,9 @@ const EditProduct = () => {
     fetchProduct();
   }, [id]);
 
-  const handleSubmit = async (updatedProduct) => {
+  const handleSubmit = async (formData) => {
     try {
-      await updateProduct(id, updatedProduct);
+      await updateProduct(id, formData);
       navigate('/');
     } catch (error) {
       console.error('Error al actualizar el producto:', error);

@@ -8,7 +8,7 @@ const ProductForm = ({ onSubmit, initialData }) => {
       descripcion: '',
       precio: '',
       cantidad: '',
-      imagen: null, // Cambiar a null para manejar archivos
+      imagen: null,
       categoria: '',
     }
   );
@@ -22,7 +22,7 @@ const ProductForm = ({ onSubmit, initialData }) => {
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (name === 'imagen') {
-      setFormData({ ...formData, [name]: files[0] }); // Manejar archivo
+      setFormData({ ...formData, [name]: files[0] });
     } else {
       setFormData({ ...formData, [name]: value });
     }
@@ -32,6 +32,10 @@ const ProductForm = ({ onSubmit, initialData }) => {
     e.preventDefault();
     const data = new FormData();
     for (const key in formData) {
+      if (key === 'imagen' && typeof formData[key] === 'string') {
+        // Si la imagen es una URL base64, no la agregues al FormData
+        continue;
+      }
       data.append(key, formData[key]);
     }
     onSubmit(data);
