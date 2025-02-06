@@ -28,13 +28,21 @@ const ProductList = () => {
     }
   };
 
+  // Función para convertir Buffer a base64 en el navegador
+  const bufferToBase64 = (buffer) => {
+    const binary = new Uint8Array(buffer).reduce((data, byte) => data + String.fromCharCode(byte), '');
+    return `data:image/jpeg;base64,${btoa(binary)}`;
+  };
+
   return (
     <div>
       <h1>Inventario de Productos</h1>
       <ul>
         {products.map((product) => (
           <li key={product._id}>
-            <img src={product.imagen} alt={product.nombre} width="100" />
+            {product.imagen && (
+              <img src={bufferToBase64(product.imagen.data)} alt={product.nombre} width="100" />
+            )}
             <h2>{product.nombre}</h2>
             <p>{product.descripcion}</p>
             <p>Precio: ${product.precio}</p>

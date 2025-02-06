@@ -1,5 +1,5 @@
 // frontend/src/components/ProductForm.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const ProductForm = ({ onSubmit, initialData }) => {
   const [formData, setFormData] = useState(
@@ -12,6 +12,12 @@ const ProductForm = ({ onSubmit, initialData }) => {
       categoria: '',
     }
   );
+
+  useEffect(() => {
+    if (initialData) {
+      setFormData(initialData);
+    }
+  }, [initialData]);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -74,11 +80,13 @@ const ProductForm = ({ onSubmit, initialData }) => {
       </div>
       <div>
         <label>Imagen:</label>
+        {formData.imagen && typeof formData.imagen === 'string' && (
+          <img src={formData.imagen} alt="Producto" width="100" />
+        )}
         <input
           type="file"
           name="imagen"
           onChange={handleChange}
-          required
         />
       </div>
       <div>

@@ -13,7 +13,18 @@ const EditProduct = () => {
     const fetchProduct = async () => {
       try {
         const response = await getProductById(id);
-        setProduct(response.data);
+        const productData = response.data;
+
+        // Convertir el buffer de la imagen a base64
+        if (productData.imagen && productData.imagen.data) {
+          const binary = new Uint8Array(productData.imagen.data).reduce(
+            (data, byte) => data + String.fromCharCode(byte),
+            ''
+          );
+          productData.imagen = `data:image/jpeg;base64,${btoa(binary)}`;
+        }
+
+        setProduct(productData);
       } catch (error) {
         console.error('Error al obtener el producto:', error);
       }
