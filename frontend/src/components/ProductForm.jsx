@@ -1,4 +1,4 @@
-// src/components/ProductForm.jsx
+// frontend/src/components/ProductForm.jsx
 import React, { useState } from 'react';
 
 const ProductForm = ({ onSubmit, initialData }) => {
@@ -8,19 +8,27 @@ const ProductForm = ({ onSubmit, initialData }) => {
       descripcion: '',
       precio: '',
       cantidad: '',
-      imagen: '',
+      imagen: null, // Cambiar a null para manejar archivos
       categoria: '',
     }
   );
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    const { name, value, files } = e.target;
+    if (name === 'imagen') {
+      setFormData({ ...formData, [name]: files[0] }); // Manejar archivo
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(formData);
+    const data = new FormData();
+    for (const key in formData) {
+      data.append(key, formData[key]);
+    }
+    onSubmit(data);
   };
 
   return (
@@ -65,11 +73,10 @@ const ProductForm = ({ onSubmit, initialData }) => {
         />
       </div>
       <div>
-        <label>Imagen (URL):</label>
+        <label>Imagen:</label>
         <input
-          type="text"
+          type="file"
           name="imagen"
-          value={formData.imagen}
           onChange={handleChange}
           required
         />
