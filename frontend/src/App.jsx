@@ -5,6 +5,7 @@ import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import AddProduct from './pages/addProduct';
 import EditProduct from './pages/EditProduct';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = () => {
   return (

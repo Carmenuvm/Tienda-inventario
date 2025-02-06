@@ -1,4 +1,3 @@
-// frontend/src/components/ProductForm.jsx
 import React, { useState, useEffect } from 'react';
 
 const ProductForm = ({ onSubmit, initialData }) => {
@@ -42,69 +41,80 @@ const ProductForm = ({ onSubmit, initialData }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label>Nombre:</label>
-        <input
-          type="text"
-          name="nombre"
-          value={formData.nombre}
-          onChange={handleChange}
-          required
-        />
-      </div>
-      <div>
-        <label>Descripción:</label>
-        <textarea
-          name="descripcion"
-          value={formData.descripcion}
-          onChange={handleChange}
-          required
-        />
-      </div>
-      <div>
-        <label>Precio:</label>
-        <input
-          type="number"
-          name="precio"
-          value={formData.precio}
-          onChange={handleChange}
-          required
-        />
-      </div>
-      <div>
-        <label>Cantidad:</label>
-        <input
-          type="number"
-          name="cantidad"
-          value={formData.cantidad}
-          onChange={handleChange}
-          required
-        />
-      </div>
-      <div>
-        <label>Imagen:</label>
-        {formData.imagen && typeof formData.imagen === 'string' && (
-          <img src={formData.imagen} alt="Producto" width="100" />
-        )}
-        <input
-          type="file"
-          name="imagen"
-          onChange={handleChange}
-        />
-      </div>
-      <div>
-        <label>Categoría:</label>
-        <input
-          type="text"
-          name="categoria"
-          value={formData.categoria}
-          onChange={handleChange}
-          required
-        />
-      </div>
-      <button type="submit">Guardar</button>
-    </form>
+    <div className="container mt-4">
+      <h1 className="mb-4">{initialData ? 'Editar Producto' : 'Agregar Producto'}</h1>
+      <form onSubmit={handleSubmit}>
+        <div className="mb-3">
+          <label className="form-label">Nombre:</label>
+          <input
+            type="text"
+            name="nombre"
+            value={formData.nombre}
+            onChange={handleChange}
+            className="form-control"
+            required
+          />
+        </div>
+        <div className="mb-3">
+          <label className="form-label">Descripción:</label>
+          <textarea
+            name="descripcion"
+            value={formData.descripcion}
+            onChange={handleChange}
+            className="form-control"
+            required
+          />
+        </div>
+        <div className="mb-3">
+          <label className="form-label">Precio:</label>
+          <input
+            type="number"
+            name="precio"
+            value={formData.precio}
+            onChange={handleChange}
+            className="form-control"
+            required
+          />
+        </div>
+        <div className="mb-3">
+          <label className="form-label">Cantidad:</label>
+          <input
+            type="number"
+            name="cantidad"
+            value={formData.cantidad}
+            onChange={handleChange}
+            className="form-control"
+            required
+          />
+        </div>
+        <div className="mb-3">
+          <label className="form-label">Imagen:</label>
+          {formData.imagen && typeof formData.imagen === 'string' && (
+            <img src={formData.imagen} alt="Producto" width="100" className="img-thumbnail mb-2" />
+          )}
+          <input
+            type="file"
+            name="imagen"
+            onChange={handleChange}
+            className="form-control"
+          />
+        </div>
+        <div className="mb-3">
+          <label className="form-label">Categoría:</label>
+          <input
+            type="text"
+            name="categoria"
+            value={formData.categoria}
+            onChange={handleChange}
+            className="form-control"
+            required
+          />
+        </div>
+        <button type="submit" className="btn btn-primary">
+          Guardar
+        </button>
+      </form>
+    </div>
   );
 };
 
