@@ -33,7 +33,7 @@ const ProductForm = ({ onSubmit, initialData }) => {
     const data = new FormData();
     for (const key in formData) {
       if (key === 'imagen' && typeof formData[key] === 'string') {
-        // Si la imagen es una URL base64, no la agregues al FormData
+        // Si la imagen es una URL base64, no se agg al FormData
         continue;
       }
       data.append(key, formData[key]);
