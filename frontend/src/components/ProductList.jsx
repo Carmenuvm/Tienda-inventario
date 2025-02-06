@@ -1,7 +1,7 @@
 // src/components/ProductList.jsx
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { getProducts } from '../services/api';
+import { getProducts, deleteProduct } from '../services/api';
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
@@ -19,6 +19,15 @@ const ProductList = () => {
     fetchProducts();
   }, []);
 
+  const handleDelete = async (id) => {
+    try {
+      await deleteProduct(id);
+      setProducts(products.filter((product) => product._id !== id));
+    } catch (error) {
+      console.error('Error al eliminar el producto:', error);
+    }
+  };
+
   return (
     <div>
       <h1>Inventario de Productos</h1>
@@ -31,6 +40,7 @@ const ProductList = () => {
             <p>Precio: ${product.precio}</p>
             <p>Cantidad: {product.cantidad}</p>
             <Link to={`/edit/${product._id}`}>Editar</Link>
+            <button onClick={() => handleDelete(product._id)}>Eliminar</button>
           </li>
         ))}
       </ul>

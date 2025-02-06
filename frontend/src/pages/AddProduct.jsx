@@ -8,8 +8,12 @@ const AddProduct = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async (product) => {
-    await createProduct(product);
-    navigate('/');
+    try {
+      await createProduct(product);
+      navigate('/');
+    } catch (error) {
+      console.error('Error al crear el producto:', error);
+    }
   };
 
   return (

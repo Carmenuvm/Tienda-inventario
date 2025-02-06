@@ -11,16 +11,24 @@ const EditProduct = () => {
 
   useEffect(() => {
     const fetchProduct = async () => {
-      const response = await getProductById(id);
-      setProduct(response.data);
+      try {
+        const response = await getProductById(id);
+        setProduct(response.data);
+      } catch (error) {
+        console.error('Error al obtener el producto:', error);
+      }
     };
 
     fetchProduct();
   }, [id]);
 
   const handleSubmit = async (updatedProduct) => {
-    await updateProduct(id, updatedProduct);
-    navigate('/');
+    try {
+      await updateProduct(id, updatedProduct);
+      navigate('/');
+    } catch (error) {
+      console.error('Error al actualizar el producto:', error);
+    }
   };
 
   if (!product) return <div>Cargando...</div>;
@@ -28,7 +36,7 @@ const EditProduct = () => {
   return (
     <div>
       <h1>Editar Producto</h1>
-      <ProductForm product={product} onSubmit={handleSubmit} />
+      <ProductForm onSubmit={handleSubmit} initialData={product} />
     </div>
   );
 };
