@@ -7,6 +7,18 @@ const router = express.Router();
 // Aplicar el middleware de autenticación a todas las rutas de productos
 router.use(authMiddleware);
 
+
+// Obtener todas las categorías únicas
+router.get('/categories', async (req, res) => {
+  try {
+    const categories = await Product.distinct('categoria');
+    res.json(categories);
+  } catch (error) {
+    console.error('Error al obtener categorías:', error);
+    res.status(500).json({ message: error.message });
+  }
+});
+
 // Obtener todos los productos
 router.get('/', async (req, res) => {
   try {
@@ -28,15 +40,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// Obtener todas las categorías únicas
-router.get('/categories', async (req, res) => {
-  try {
-    const categories = await Product.distinct('categoria');
-    res.json(categories);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
+
 
 // Configuración de multer para almacenar en memoria
 const storage = multer.memoryStorage();
