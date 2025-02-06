@@ -25,4 +25,30 @@ const createProduct = async (req, res) => {
     res.status(400).json({ message: 'Error al crear el producto', error: error.message });
   }
 };
-module.exports = { getProducts, createProduct };
+
+const updateProduct = async (req, res) => {
+  const { nombre, descripcion, precio, cantidad, categoria } = req.body;
+  let imagen = req.file ? req.file.buffer : undefined;
+
+  try {
+    const existingProduct = await Product.findById(req.params.id);
+    if (!existingProduct) return res.status(404).json({ message: 'Producto no encontrado' });
+
+    // Si no se proporciona una nueva imagen, usa la existente
+    if (!imagen) {
+      imagen = existingProduct.imagen;
+    }
+
+    const updatedProduct = await Product.findByIdAndUpdate(
+      req.params.id,
+      { nombre, descripcion, precio, cantidad, imagen, categoria },
+      { new: true }
+    );
+
+    res.json(updatedProduct);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+module.exports = { getProducts, createProduct, updateProduct };

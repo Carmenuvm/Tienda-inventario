@@ -46,7 +46,7 @@ router.post('/', isAdmin, upload.single('imagen'), async (req, res) => {
 });
 
 // Actualizar un producto (requiere ser admin)
-router.put('/:id', isAdmin, async (req, res) => {
+router.put('/:id', isAdmin, upload.single('imagen'), async (req, res) => {
   try {
     const updatedProduct = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
     if (!updatedProduct) return res.status(404).json({ message: 'Producto no encontrado' });
