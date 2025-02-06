@@ -1,34 +1,36 @@
 // src/components/ProductList.jsx
 import React, { useEffect, useState } from 'react';
-import { getProducts, deleteProduct } from '../services/api';
 import { Link } from 'react-router-dom';
+import { getProducts } from '../services/api';
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const response = await getProducts();
-      setProducts(response.data);
+      try {
+        const response = await getProducts();
+        setProducts(response.data);
+      } catch (error) {
+        console.error('Error al obtener los productos:', error);
+      }
     };
 
     fetchProducts();
   }, []);
 
-  const handleDelete = async (id) => {
-    await deleteProduct(id);
-    setProducts(products.filter(product => product._id !== id));
-  };
-
   return (
     <div>
       <h1>Inventario de Productos</h1>
       <ul>
-        {products.map(product => (
+        {products.map((product) => (
           <li key={product._id}>
-            {product.name} - ${product.price}
+            <img src={product.imagen} alt={product.nombre} width="100" />
+            <h2>{product.nombre}</h2>
+            <p>{product.descripcion}</p>
+            <p>Precio: ${product.precio}</p>
+            <p>Cantidad: {product.cantidad}</p>
             <Link to={`/edit/${product._id}`}>Editar</Link>
-            <button onClick={() => handleDelete(product._id)}>Eliminar</button>
           </li>
         ))}
       </ul>
