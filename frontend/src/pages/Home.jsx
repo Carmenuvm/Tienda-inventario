@@ -5,7 +5,7 @@ import ProductList from '../components/ProductList';
 const Home = () => {
   return (
     <div>
-      <h1>Bienvenido al Inventario de la Tienda</h1>
+      <h1>Bienvenido a la tiendita</h1>
       <ProductList />
     </div>
   );

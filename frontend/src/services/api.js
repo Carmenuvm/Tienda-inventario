@@ -16,5 +16,6 @@ export const updateProduct = (id, formData) => {
   });
 };
 export const deleteProduct = (id) => api.delete(`/products/${id}`);
+export const getCategories = () => api.get('/products/categories');
 
 export default api;

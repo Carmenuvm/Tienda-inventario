@@ -1,10 +1,13 @@
 // src/components/ProductList.jsx
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { getProducts, deleteProduct } from '../services/api';
+import { getProducts, deleteProduct, getCategories } from '../services/api';
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -16,7 +19,17 @@ const ProductList = () => {
       }
     };
 
+    const fetchCategories = async () => {
+      try {
+        const response = await getCategories();
+        setCategories(response.data);
+      } catch (error) {
+        console.error('Error al obtener las categorías:', error);
+      }
+    };
+
     fetchProducts();
+    fetchCategories();
   }, []);
 
   const handleDelete = async (id) => {
@@ -28,6 +41,13 @@ const ProductList = () => {
     }
   };
 
+  const filteredProducts = products.filter((product) => {
+    return (
+      (selectedCategory === '' || product.categoria === selectedCategory) &&
+      (searchTerm === '' || product.nombre.toLowerCase().includes(searchTerm.toLowerCase()))
+    );
+  });
+
   // Función para convertir Buffer a base64 en el navegador
   const bufferToBase64 = (buffer) => {
     const binary = new Uint8Array(buffer).reduce((data, byte) => data + String.fromCharCode(byte), '');
@@ -37,8 +57,27 @@ const ProductList = () => {
   return (
     <div>
       <h1>Inventario de Productos</h1>
+      <div>
+        <input
+          type="text"
+          placeholder="Buscar productos..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        <select
+          value={selectedCategory}
+          onChange={(e) => setSelectedCategory(e.target.value)}
+        >
+          <option value="">Todas las categorías</option>
+          {categories.map((category) => (
+            <option key={category} value={category}>
+              {category}
+            </option>
+          ))}
+        </select>
+      </div>
       <ul>
-        {products.map((product) => (
+        {filteredProducts.map((product) => (
           <li key={product._id}>
             {product.imagen && (
               <img src={bufferToBase64(product.imagen.data)} alt={product.nombre} width="100" />
