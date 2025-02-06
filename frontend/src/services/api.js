@@ -1,4 +1,4 @@
-// src/services/api.js
+// src/services/api.js/ agg api para manejar crud
 import axios from 'axios';
 
 const api = axios.create({
