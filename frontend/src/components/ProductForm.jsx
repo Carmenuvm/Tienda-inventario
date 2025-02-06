@@ -1,17 +1,21 @@
 // src/components/ProductForm.jsx
 import React, { useState } from 'react';
 
-const ProductForm = ({ product, onSubmit }) => {
-  const [formData, setFormData] = useState({
-    name: product ? product.name : '',
-    price: product ? product.price : '',
-  });
+const ProductForm = ({ onSubmit, initialData }) => {
+  const [formData, setFormData] = useState(
+    initialData || {
+      nombre: '',
+      descripcion: '',
+      precio: '',
+      cantidad: '',
+      imagen: '',
+      categoria: '',
+    }
+  );
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleSubmit = (e) => {
@@ -25,18 +29,59 @@ const ProductForm = ({ product, onSubmit }) => {
         <label>Nombre:</label>
         <input
           type="text"
-          name="name"
-          value={formData.name}
+          name="nombre"
+          value={formData.nombre}
           onChange={handleChange}
+          required
+        />
+      </div>
+      <div>
+        <label>Descripción:</label>
+        <textarea
+          name="descripcion"
+          value={formData.descripcion}
+          onChange={handleChange}
+          required
         />
       </div>
       <div>
         <label>Precio:</label>
         <input
           type="number"
-          name="price"
-          value={formData.price}
+          name="precio"
+          value={formData.precio}
           onChange={handleChange}
+          required
+        />
+      </div>
+      <div>
+        <label>Cantidad:</label>
+        <input
+          type="number"
+          name="cantidad"
+          value={formData.cantidad}
+          onChange={handleChange}
+          required
+        />
+      </div>
+      <div>
+        <label>Imagen (URL):</label>
+        <input
+          type="text"
+          name="imagen"
+          value={formData.imagen}
+          onChange={handleChange}
+          required
+        />
+      </div>
+      <div>
+        <label>Categoría:</label>
+        <input
+          type="text"
+          name="categoria"
+          value={formData.categoria}
+          onChange={handleChange}
+          required
         />
       </div>
       <button type="submit">Guardar</button>
