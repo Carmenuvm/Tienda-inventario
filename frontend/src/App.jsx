@@ -1,20 +1,58 @@
-// src/App.jsx enrutamiento react-router-dom
+// src/App.jsx
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import AddProduct from './pages/addProduct';
 import EditProduct from './pages/EditProduct';
+import Login from './components/Login';
 import 'bootstrap/dist/css/bootstrap.min.css';
+
+// Componente para proteger rutas
+const ProtectedRoute = ({ children }) => {
+  const token = localStorage.getItem('token'); // Verificar si el usuario está autenticado
+  if (!token) {
+    return <Navigate to="/login" />; // Redirigir al login si no está autenticado
+  }
+  return children;
+};
 
 const App = () => {
   return (
     <Router>
       <Navbar />
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/add" element={<AddProduct />} />
-        <Route path="/edit/:id" element={<EditProduct />} />
+        {/* Ruta pública (Login) */}
+        <Route path="/login" element={<Login />} />
+
+        {/* Rutas protegidas */}
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <Home />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/add"
+          element={
+            <ProtectedRoute>
+              <AddProduct />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/edit/:id"
+          element={
+            <ProtectedRoute>
+              <EditProduct />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Redirigir al login por defecto */}
+        <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
     </Router>
   );
