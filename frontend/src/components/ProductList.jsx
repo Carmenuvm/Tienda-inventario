@@ -1,35 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { FaStar } from 'react-icons/fa';
 import api from '../services/api';
-import { getCategories } from '../services/api';
+import { getCategories, getProfile } from '../services/api';
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
+  const [userFavorites, setUserFavorites] = useState([]);
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchData = async () => {
       try {
-        const response = await api.get('/products');
-        setProducts(response.data);
+        // Obtener productos y categorías
+        const productsResponse = await api.get('/products');
+        const categoriesResponse = await getCategories();
+        
+        // Obtener favoritos del usuario
+        const profileResponse = await getProfile();
+        
+        setProducts(productsResponse.data);
+        setCategories(categoriesResponse.data);
+        setUserFavorites(profileResponse.data.favoritos || []);
       } catch (error) {
-        console.error('Error al obtener productos:', error);
+        console.error('Error fetching data:', error);
       }
     };
 
-    const fetchCategories = async () => {
-      try {
-        const response = await getCategories();
-        setCategories(response.data);
-      } catch (error) {
-        console.error('Error al obtener las categorías:', error);
-      }
-    };
-
-    fetchProducts();
-    fetchCategories();
+    fetchData();
   }, []);
 
   const handleDelete = async (id) => {
@@ -41,6 +41,21 @@ const ProductList = () => {
     }
   };
 
+  const handleFavorite = async (productId) => {
+    try {
+      await api.post('/users/favorites', { productId });
+      
+      // Actualizar estado local
+      setUserFavorites(prev => 
+        prev.includes(productId) 
+          ? prev.filter(id => id !== productId)
+          : [...prev, productId]
+      );
+    } catch (error) {
+      console.error('Error updating favorites:', error);
+    }
+  };
+
   const filteredProducts = products.filter((product) => {
     return (
       (selectedCategory === '' || product.categoria === selectedCategory) &&
@@ -48,7 +63,6 @@ const ProductList = () => {
     );
   });
 
-  // Función para convertir Buffer a base64 en el navegador
   const bufferToBase64 = (buffer) => {
     const binary = new Uint8Array(buffer).reduce((data, byte) => data + String.fromCharCode(byte), '');
     return `data:image/jpeg;base64,${btoa(binary)}`;
@@ -87,22 +101,37 @@ const ProductList = () => {
                   src={bufferToBase64(product.imagen.data)}
                   alt={product.nombre}
                   className="card-img-top"
+                  style={{ height: '200px', objectFit: 'cover' }}
                 />
               )}
               <div className="card-body">
-                <h5 className="card-title">{product.nombre}</h5>
+                <div className="d-flex justify-content-between align-items-center mb-3">
+                  <h5 className="card-title m-0">{product.nombre}</h5>
+                  <button 
+                    onClick={() => handleFavorite(product._id)}
+                    className="btn btn-link p-0"
+                  >
+                    <FaStar 
+                      color={userFavorites.includes(product._id) ? '#ffd700' : '#e4e5e9'} 
+                      size={24}
+                      className="star-icon"
+                    />
+                  </button>
+                </div>
                 <p className="card-text">{product.descripcion}</p>
                 <p className="card-text">Precio: ${product.precio}</p>
                 <p className="card-text">Cantidad: {product.cantidad}</p>
-                <Link to={`/edit/${product._id}`} className="btn btn-primary me-2">
-                  Editar
-                </Link>
-                <button
-                  onClick={() => handleDelete(product._id)}
-                  className="btn btn-danger"
-                >
-                  Eliminar
-                </button>
+                <div className="d-flex gap-2">
+                  <Link to={`/edit/${product._id}`} className="btn btn-primary">
+                    Editar
+                  </Link>
+                  <button
+                    onClick={() => handleDelete(product._id)}
+                    className="btn btn-danger"
+                  >
+                    Eliminar
+                  </button>
+                </div>
               </div>
             </div>
           </div>

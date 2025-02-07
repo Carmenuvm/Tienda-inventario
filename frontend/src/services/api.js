@@ -45,10 +45,15 @@ export const deleteUser = (id) => api.delete(`/users/${id}`);
 export const getProfile = async () => {
     return await api.get('/users/profile');
   };
-  
+
 // Función para actualizar el perfil
 export const updateProfile = async (userData) => {
   return await api.put('/users/profile', userData);
 };
+
+// Funcion para add favoritos
+export const addFavorite = (productId) => {
+    return api.post('/users/favorites', { productId });
+  };
 
 export default api;
