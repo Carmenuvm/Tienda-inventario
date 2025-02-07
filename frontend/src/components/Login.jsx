@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import api from '../services/api';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -20,16 +21,17 @@ const Login = () => {
       localStorage.setItem('token', response.data.token);
       // Redirigir al usuario a la página principal o de administración
       window.location.href = '/'; // Redirige a la página principal
+      toast.success('Inicio de sesión exitoso'); // Notificación de éxito
     } catch (error) {
       console.error('Error al iniciar sesión:', error);
-      alert('Error al iniciar sesión. Verifica tus credenciales.');
+      toast.error('Error al iniciar sesión. Verifica tus credenciales.'); // Notificación de error
     }
   };
 
   const handleRegister = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
-      alert('Las contraseñas no coinciden.');
+      toast.error('Las contraseñas no coinciden.'); // Notificación de error
       return;
     }
     try {
@@ -54,11 +56,10 @@ const Login = () => {
 
       // Cambiar a la vista de login
       setIsRegistering(false);
-      alert('Registro exitoso. Por favor inicia sesión.');
-
+      toast.success('Registro exitoso. Por favor inicia sesión.'); // Notificación de éxito
     } catch (error) {
       console.error('Error al registrarse:', error);
-      alert('Error al registrarse. Inténtalo de nuevo.');
+      toast.error('Error al registrarse. Inténtalo de nuevo.'); // Notificación de error
     }
   };
 

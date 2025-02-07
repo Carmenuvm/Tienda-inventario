@@ -1,5 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify'; // Importa ToastContainer
+import 'react-toastify/dist/ReactToastify.css'; 
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import AddProduct from './pages/addProduct';
@@ -21,6 +23,19 @@ const ProtectedRoute = ({ children }) => {
 const App = () => {
   return (
     <Router>
+      {}
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+      
       <div className="d-flex flex-column min-vh-100">
         <Navbar />
         <div className="flex-grow-1">
