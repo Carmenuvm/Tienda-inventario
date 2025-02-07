@@ -1,6 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+const handleLogout = () => {
+    localStorage.removeItem('token'); // Eliminar el token
+    navigate('/login'); // Redirigir al login
+  };
+
 const Navbar = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -31,6 +36,7 @@ const Navbar = () => {
                 Agregar Producto
               </Link>
             </li>
+            <button onClick={handleLogout}>Cerrar Sesión</button>
           </ul>
         </div>
       </div>

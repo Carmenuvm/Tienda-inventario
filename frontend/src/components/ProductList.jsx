@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { getProducts, deleteProduct, getCategories } from '../services/api';
+import api from '../services/api';
+import { getCategories } from '../services/api';
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
@@ -11,10 +12,10 @@ const ProductList = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await getProducts();
+        const response = await api.get('/products');
         setProducts(response.data);
       } catch (error) {
-        console.error('Error al obtener los productos:', error);
+        console.error('Error al obtener productos:', error);
       }
     };
 
@@ -33,7 +34,7 @@ const ProductList = () => {
 
   const handleDelete = async (id) => {
     try {
-      await deleteProduct(id);
+      await api.delete(`/products/${id}`);
       setProducts(products.filter((product) => product._id !== id));
     } catch (error) {
       console.error('Error al eliminar el producto:', error);

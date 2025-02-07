@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../services/api'; 
 import { Link } from 'react-router-dom';
 
 const Login = () => {
@@ -11,11 +11,12 @@ const Login = () => {
   const [direccion, setDireccion] = useState('');
   const [telefono, setTelefono] = useState('');
   const [isRegistering, setIsRegistering] = useState(false); // Estado para alternar entre login y registro
+  const [role, setRole] = useState('user'); // Estado para el rol
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/login', { email, password });
+      const response = await api.post('/auth/login', { email, password }); // Usa la instancia de Axios
       localStorage.setItem('token', response.data.token);
       // Redirigir al usuario a la página principal o de administración
       window.location.href = '/'; // Redirige a la página principal
@@ -32,17 +33,29 @@ const Login = () => {
       return;
     }
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/register', {
+      await api.post('/auth/register', {
         nombre,
         apellido,
         email,
         password,
         direccion,
         telefono,
+        role,
       });
-      localStorage.setItem('token', response.data.token);
-      // Redirigir al usuario a la página principal o de administración
-      window.location.href = '/'; // Redirige a la página principal
+      
+      // Limpiar los campos del formulario
+      setNombre('');
+      setApellido('');
+      setEmail('');
+      setPassword('');
+      setConfirmPassword('');
+      setDireccion('');
+      setTelefono('');
+      
+      // Cambiar a la vista de login
+      setIsRegistering(false);
+      alert('Registro exitoso. Por favor inicia sesión.');
+      
     } catch (error) {
       console.error('Error al registrarse:', error);
       alert('Error al registrarse. Inténtalo de nuevo.');
@@ -135,6 +148,13 @@ const Login = () => {
                       className="form-control"
                       placeholder="Teléfono"
                     />
+                  </div>
+                  <div className="mb-3">
+                    <label className="form-label">Rol:</label>
+                    <select value={role} onChange={(e) => setRole(e.target.value)}>
+                      <option value="user">Usuario</option>
+                      <option value="admin">Administrador</option>
+                    </select>
                   </div>
                   <button type="submit" className="btn btn-primary w-100">
                     Registrarse
