@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Modal, Form } from 'react-bootstrap';
-import axios from 'axios';
+import { getUsers, updateUser, deleteUser } from '../services/api';
 
 const UserManagement = () => {
   const [users, setUsers] = useState([]);
@@ -13,10 +13,11 @@ const UserManagement = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get('/api/users/users');
+      const response = await getUsers();
       console.log('Fetched users:', response.data);
       setUsers(Array.isArray(response.data) ? response.data : []);
     } catch (error) {
+      console.error('Error fetching users:', error);
       setUsers([]);
     }
   };
@@ -24,7 +25,7 @@ const UserManagement = () => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`/api/users/users/${selectedUser._id}`, selectedUser);
+      await updateUser(selectedUser.id, selectedUser);
       fetchUsers();
       setShowEdit(false);
     } catch (error) {
@@ -33,7 +34,7 @@ const UserManagement = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`/api/users/users/${id}`);
+      await deleteUser(id);
       fetchUsers();
     } catch (error) {
     }

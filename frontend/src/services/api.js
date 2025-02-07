@@ -36,14 +36,15 @@ export const updateProduct = (id, formData) => {
 export const deleteProduct = (id) => api.delete(`/products/${id}`);
 export const getCategories = () => api.get('/products/categories');
 
-// src/services/api.js
-export const getUsers = () => api.get('/users/users');
-export const updateUser = (id, userData) => api.put(`/users/users/${id}`, userData);
-export const deleteUser = (id) => api.delete(`/users/users/${id}`);
+// funcion para mostrar la informacion de usuarios
+export const getUsers = () => api.get('/users');
+export const updateUser = (id, userData) => api.put(`/users/${id}`, userData);  
+export const deleteUser = (id) => api.delete(`/users/${id}`);  
+
 
 // Función para actualizar el perfil
 export const updateProfile = async (userData) => {
-  return await api.put('/users/profile', userData); // Asegúrate de que esta ruta sea correcta
+  return await api.put('/users/profile', userData);
 };
 
 export default api;
