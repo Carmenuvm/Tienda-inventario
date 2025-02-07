@@ -15,10 +15,9 @@ const {
 } = require('../controllers/userController');
 
 // Rutas de administración
-router.get('/users', authMiddleware, isAdmin, getAllUsers);
-router.put('/users/:id', authMiddleware, isAdmin, updateUser);
-router.delete('/users/:id', authMiddleware, isAdmin, deleteUser);
-
+router.get('/', authMiddleware, isAdmin, getAllUsers); // Cambiado de '/users' a '/'
+router.put('/:id', authMiddleware, isAdmin, updateUser); // Cambiado de '/users/:id' a '/:id'
+router.delete('/:id', authMiddleware, isAdmin, deleteUser); // Cambiado de '/users/:id' a '/:i
 // Rutas de perfil de usuario
 router.put('/profile', authMiddleware, updateProfile);
 router.post('/favorites', authMiddleware, addFavorite);
