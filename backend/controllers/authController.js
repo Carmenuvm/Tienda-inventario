@@ -5,7 +5,7 @@ const generateToken = require('../utils/generateToken');
 
 const register = async (req, res) => {
   console.log(req.body);
-  const { nombre, apellido, email, password, direccion, telefono, role } = req.body;
+  const { nombre, apellido, email, password, direccion, telefono, role } = req.body; //se establecio role
 
   if (req.body.confirmPassword && password !== req.body.confirmPassword) {
     return res.status(400).json({ message: 'Las contraseñas no coinciden.' });
@@ -25,7 +25,7 @@ const register = async (req, res) => {
       password: hashedPassword,
       direccion,
       telefono,
-      role: role || 'user',
+      role: role || 'user',// role por default
     });
     res.status(201).json({ token: generateToken(user._id, user.role) });
   } catch (error) {

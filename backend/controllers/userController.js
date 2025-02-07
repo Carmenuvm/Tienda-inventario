@@ -1,16 +1,54 @@
 // controllers/userController.js
 const User = require('./models/User');
 
+
+// Obtener todos los usuarios (solo admin)
 const getAllUsers = async (req, res) => {
   try {
-    const users = await User.find({}, { password: 0 }); // Excluir la contraseña
+    const users = await User.find({}, { password: 0 });
     res.json(users);
   } catch (error) {
-    res.status(500).json({ message: 'Error al obtener los usuarios' });
+    res.status(500).json({ message: 'Error al obtener usuarios' });
   }
 };
 
-module.exports = { addFavorite, updateProfile, getAllUsers };
+// Actualizar cualquier usuario (admin)
+const updateUser = async (req, res) => {
+  try {
+    const user = await User.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, select: '-password' }
+    );
+    res.json(user);
+  } catch (error) {
+    res.status(400).json({ message: 'Error actualizando usuario' });
+  }
+};
+
+// Eliminar usuario (admin)
+const deleteUser = async (req, res) => {
+  try {
+    await User.findByIdAndDelete(req.params.id);
+    res.json({ message: 'Usuario eliminado' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error eliminando usuario' });
+  }
+};
+
+// Actualizar perfil propio
+const updateProfile = async (req, res) => {
+  try {
+    const user = await User.findByIdAndUpdate(
+      req.user.id,
+      req.body,
+      { new: true, select: '-password' }
+    );
+    res.json(user);
+  } catch (error) {
+    res.status(400).json({ message: 'Error actualizando perfil' });
+  }
+};
 
 const addFavorite = async (req, res) => {
   const { productId } = req.body;
@@ -28,21 +66,14 @@ const addFavorite = async (req, res) => {
   }
 };
 
-module.exports = { addFavorite };
-const updateProfile = async (req, res) => {
-  const { nombre, apellido, direccion, telefono } = req.body;
-  const userId = req.user.id;
 
-  try {
-    const user = await User.findByIdAndUpdate(
-      userId,
-      { nombre, apellido, direccion, telefono },
-      { new: true }
-    );
-    res.json(user);
-  } catch (error) {
-    res.status(500).json({ message: 'Error al actualizar el perfil' });
-  }
+module.exports = {
+  getAllUsers,
+  updateUser,
+  deleteUser,
+  updateProfile,
+  addFavorite
 };
 
-module.exports = { addFavorite, updateProfile };
+
+
