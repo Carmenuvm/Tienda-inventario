@@ -22,15 +22,16 @@ const UserManagement = () => {
     }
   };
 
-  const handleUpdate = async (e) => {
-    e.preventDefault();
-    try {
-      await updateUser(selectedUser.id, selectedUser);
-      fetchUsers();
-      setShowEdit(false);
-    } catch (error) {
-    }
-  };
+const handleUpdate = async (e) => {
+  e.preventDefault();
+  try {
+    await updateUser(selectedUser._id, selectedUser); // Corregido aquí
+    fetchUsers();
+    setShowEdit(false);
+  } catch (error) {
+    console.error('Error updating user:', error); // Agregar manejo de error
+  }
+};
 
   const handleDelete = async (id) => {
     try {

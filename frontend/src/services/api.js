@@ -41,7 +41,11 @@ export const getUsers = () => api.get('/users');
 export const updateUser = (id, userData) => api.put(`/users/${id}`, userData);  
 export const deleteUser = (id) => api.delete(`/users/${id}`);  
 
-
+// Función para obtener el perfil del usuario
+export const getProfile = async () => {
+    return await api.get('/users/profile');
+  };
+  
 // Función para actualizar el perfil
 export const updateProfile = async (userData) => {
   return await api.put('/users/profile', userData);

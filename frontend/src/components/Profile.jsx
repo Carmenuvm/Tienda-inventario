@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button } from 'react-bootstrap';
-import { updateProfile } from '../services/api';
-import axios from 'axios';
+import { getProfile, updateProfile } from '../services/api';
 
 const Profile = () => {
   const [userData, setUserData] = useState({
@@ -16,7 +15,7 @@ const Profile = () => {
     // Obtener datos del usuario actual
     const fetchProfile = async () => {
       try {
-        const response = await axios.get('/api/users/profile');
+        const response = await getProfile();
         setUserData(response.data || { 
           nombre: '',
           apellido: '',
