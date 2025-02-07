@@ -40,13 +40,11 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-
-
 // Configuración de multer para almacenar en memoria
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
-// Crear un producto (requiere ser admin)
+// Ruta para crear un producto con carga de imagen
 router.post('/', isAdmin, upload.single('imagen'), async (req, res) => {
   const { nombre, descripcion, precio, cantidad, categoria } = req.body;
   const imagen = req.file ? req.file.buffer : null; // Leer el buffer de la imagen
