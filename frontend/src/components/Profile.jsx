@@ -49,7 +49,7 @@ const Profile = () => {
           <Form.Label>Nombre</Form.Label>
           <Form.Control
             type="text"
-            value={userData.nombre || ''} // Asegúrate de que el valor nunca sea undefined
+            value={userData.nombre || ''} // el valor nunca sea undefined
             onChange={(e) => setUserData({ ...userData, nombre: e.target.value })}
             required
           />
@@ -58,7 +58,7 @@ const Profile = () => {
           <Form.Label>Apellido</Form.Label>
           <Form.Control
             type="text"
-            value={userData.apellido || ''} // Asegúrate de que el valor nunca sea undefined
+            value={userData.apellido || ''} // el valor nunca sea undefined
             onChange={(e) => setUserData({ ...userData, apellido: e.target.value })}
             required
           />
@@ -67,7 +67,7 @@ const Profile = () => {
           <Form.Label>Email</Form.Label>
           <Form.Control
             type="email"
-            value={userData.email || ''} // Asegúrate de que el valor nunca sea undefined
+            value={userData.email || ''} // el valor nunca sea undefined
             onChange={(e) => setUserData({ ...userData, email: e.target.value })}
             required
           />
@@ -76,7 +76,7 @@ const Profile = () => {
           <Form.Label>Dirección</Form.Label>
           <Form.Control
             type="text"
-            value={userData.direccion || ''} // Asegúrate de que el valor nunca sea undefined
+            value={userData.direccion || ''} // el valor nunca sea undefined
             onChange={(e) => setUserData({ ...userData, direccion: e.target.value })}
           />
         </Form.Group>
@@ -84,7 +84,7 @@ const Profile = () => {
           <Form.Label>Teléfono</Form.Label>
           <Form.Control
             type="text"
-            value={userData.telefono || ''} // Asegúrate de que el valor nunca sea undefined
+            value={userData.telefono || ''} // el valor nunca sea undefined
             onChange={(e) => setUserData({ ...userData, telefono: e.target.value })}
           />
         </Form.Group>
