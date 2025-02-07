@@ -20,9 +20,12 @@ api.interceptors.request.use((config) => {
 // Función para iniciar sesión
 export const login = (credentials) => api.post('/auth/login', credentials);
 
+// Función para el crud de los productos
 export const getProducts = () => api.get('/products');
 export const getProductById = (id) => api.get(`/products/${id}`);
-export const createProduct = (product) => api.post('/products', product);
+export const createProduct = async (product) => {
+  return await api.post('/products', product);
+};
 export const updateProduct = (id, formData) => {
   return api.put(`/products/${id}`, formData, {
     headers: {
@@ -32,5 +35,15 @@ export const updateProduct = (id, formData) => {
 };
 export const deleteProduct = (id) => api.delete(`/products/${id}`);
 export const getCategories = () => api.get('/products/categories');
+
+// src/services/api.js
+export const getUsers = () => api.get('/users/users');
+export const updateUser = (id, userData) => api.put(`/users/users/${id}`, userData);
+export const deleteUser = (id) => api.delete(`/users/users/${id}`);
+
+// Función para actualizar el perfil
+export const updateProfile = async (userData) => {
+  return await api.put('/users/profile', userData); // Asegúrate de que esta ruta sea correcta
+};
 
 export default api;

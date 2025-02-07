@@ -38,7 +38,21 @@ const Navbar = () => {
                 Agregar Producto
               </Link>
             </li>
-            <button onClick={handleLogout}>Cerrar Sesión</button>
+            <li className="nav-item">
+              <Link to="/profile" className="nav-link">
+                Mi Perfil
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/user-management" className="nav-link">
+                Gestión de Usuarios
+              </Link>
+            </li>
+            <li className="nav-item">
+              <button onClick={handleLogout} className="nav-link btn btn-link">
+                Cerrar Sesión
+              </button>
+            </li>
           </ul>
         </div>
       </div>

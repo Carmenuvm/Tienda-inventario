@@ -6,6 +6,8 @@ import Home from './pages/Home';
 import AddProduct from './pages/addProduct';
 import EditProduct from './pages/EditProduct';
 import Login from './components/Login';
+import UserManagement from './components/UserManagement';
+import Profile from './components/Profile';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 // Componente para proteger rutas
@@ -50,6 +52,17 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/user-management"
+          element={
+            <ProtectedRoute>
+              <UserManagement />
+            </ProtectedRoute>
+          }
+        />
+        
+        {/* Ruta de perfil accesible para cualquier usuario autenticado */}
+        <Route path="/profile" element={<Profile />} />
 
         {/* Redirigir al login por defecto */}
         <Route path="*" element={<Navigate to="/login" />} />
