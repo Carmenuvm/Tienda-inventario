@@ -19,10 +19,10 @@ router.get('/categories', async (req, res) => {
   }
 });
 
-// Obtener todos los productos
+// Obtener todos los productos (solo mostrar productos con existencia > 0)
 router.get('/', async (req, res) => {
   try {
-    const products = await Product.find();
+    const products = await Product.find({ cantidad: { $gt: 0 } });
     res.json(products);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -46,7 +46,7 @@ router.get('/:id', async (req, res) => {
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
-// Ruta para crear un producto con carga de imagen
+// Crear un producto (requiere ser admin)
 router.post('/', isAdmin, upload.single('imagen'), async (req, res) => {
   const { nombre, descripcion, precio, cantidad, categoria } = req.body;
   const imagen = req.file ? req.file.buffer : null; // Leer el buffer de la imagen
