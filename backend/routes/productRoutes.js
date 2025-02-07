@@ -40,6 +40,8 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+
+
 // Configuración de multer para almacenar en memoria
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
@@ -72,10 +74,12 @@ router.put('/:id', isAdmin, upload.single('imagen'), async (req, res) => {
 router.delete('/:id', isAdmin, async (req, res) => {
   try {
     const product = await Product.findByIdAndDelete(req.params.id);
-    if (!product) return res.status(404).json({ message: 'Producto no encontrado' });
-    res.json({ message: 'Producto eliminado' });
+    if (!product) {
+      return res.status(404).json({ message: 'Producto no encontrado' });
+    }
+    res.status(204).send(); // Respuesta sin contenido
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: 'Error al eliminar el producto.' });
   }
 });
 

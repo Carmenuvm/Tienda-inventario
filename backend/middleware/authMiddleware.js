@@ -17,10 +17,16 @@ const authMiddleware = async (req, res, next) => {
 };
 
 const isAdmin = (req, res, next) => {
-  if (req.user && req.user.role === 'admin') {
+  const token = req.headers.authorization?.split(' ')[1];
+  
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    if (decoded.role !== 'admin') {
+      return res.status(403).json({ message: "Acceso denegado: Se requiere rol de admin" });
+    }
     next();
-  } else {
-    res.status(403).json({ message: 'Acceso denegado, no eres administrador' });
+  } catch (error) {
+    res.status(401).json({ message: "Token inválido o expirado" });
   }
 };
 

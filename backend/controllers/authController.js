@@ -5,7 +5,7 @@ const generateToken = require('../utils/generateToken');
 
 const register = async (req, res) => {
   console.log(req.body);
-  const { nombre, apellido, email, password, direccion, telefono } = req.body;
+  const { nombre, apellido, email, password, direccion, telefono, role } = req.body;
 
   if (req.body.confirmPassword && password !== req.body.confirmPassword) {
     return res.status(400).json({ message: 'Las contraseñas no coinciden.' });
@@ -25,9 +25,9 @@ const register = async (req, res) => {
       password: hashedPassword,
       direccion,
       telefono,
-      role: 'user',
+      role: role || 'user',
     });
-    res.status(201).json({ token: generateToken(user._id) });
+    res.status(201).json({ token: generateToken(user._id, user.role) });
   } catch (error) {
     console.error('Error al crear el usuario:', error);
     res.status(500).json({ message: 'Error al crear el usuario.' });
@@ -42,7 +42,7 @@ const login = async (req, res) => {
     return res.status(400).json({ message: 'Credenciales inválidas.' });
   }
 
-  res.json({ token: generateToken(user._id) });
+  res.json({ token: generateToken(user._id, user.role) });
 };
 
 module.exports = { register, login };
