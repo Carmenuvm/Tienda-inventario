@@ -69,7 +69,7 @@ const ProductList = () => {
   };
 
   return (
-    <div className="container mt-4">
+    <div className="container-fluid mt-4">
       <h1 className="mb-4">Inventario de Productos</h1>
       <div className="mb-4">
         <input
