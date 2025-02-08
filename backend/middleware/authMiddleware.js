@@ -1,33 +1,30 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
-const authMiddleware = async (req, res, next) => {
-  const token = req.headers.authorization?.split(' ')[1];
+const authMiddleware = (req, res, next) => {
+  const token = req.header('Authorization')?.replace('Bearer ', '');
+
   if (!token) {
-    return res.status(401).json({ message: 'No autorizado, no se encontró el token' });
+    return res.status(401).json({ message: 'Acceso denegado. No se proporcionó token.' });
   }
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = await User.findById(decoded.id).select('-password');
+    req.user = {
+      id: decoded.id, // Asegurar que sea el ID correcto
+      role: decoded.role
+    };
     next();
   } catch (error) {
-    res.status(401).json({ message: 'No autorizado, token inválido' });
+    res.status(400).json({ message: 'Token inválido.' });
   }
 };
 
 const isAdmin = (req, res, next) => {
-  const token = req.headers.authorization?.split(' ')[1];
-  
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    if (decoded.role !== 'admin') {
-      return res.status(403).json({ message: "Acceso denegado: Se requiere rol de admin" });
-    }
-    next();
-  } catch (error) {
-    res.status(401).json({ message: "Token inválido o expirado" });
+  if (req.user?.role !== 'admin') {
+    return res.status(403).json({ message: 'Acceso restringido a administradores' });
   }
+  next();
 };
 
 module.exports = { authMiddleware, isAdmin };

@@ -36,17 +36,48 @@ const deleteUser = async (req, res) => {
   }
 };
 
-// Actualizar perfil propio
+// Actualizar perfil propio (versión corregida)
 const updateProfile = async (req, res) => {
   try {
+    const { nombre, email, telefono, direccion } = req.body;
+    
+    // Validaciones básicas
+    if (!nombre || !email) {
+      return res.status(400).json({ message: 'Nombre y email son requeridos' });
+    }
+
     const user = await User.findByIdAndUpdate(
       req.user.id,
-      req.body,
-      { new: true, select: '-password' }
-    );
+      { nombre, email, telefono, direccion },
+      { new: true, runValidators: true }
+    ).select('-password -__v');
+
     res.json(user);
   } catch (error) {
-    res.status(400).json({ message: 'Error actualizando perfil' });
+    if (error.name === 'ValidationError') {
+      return res.status(400).json({ message: error.message });
+    }
+    res.status(500).json({ message: 'Error actualizando perfil' });
+  }
+};
+
+// Controlador mejorado con manejo de errores
+const getProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id)
+      .select('-password -__v')
+      .populate({
+        path: 'favoritos',
+        select: 'nombre descripcion precio imagen slug', 
+        model: 'Product'
+      });
+
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ 
+      message: 'Error obteniendo perfil',
+      error: error.message
+    });
   }
 };
 
@@ -66,13 +97,29 @@ const addFavorite = async (req, res) => {
   }
 };
 
+const removeFavorite = async (req, res) => {
+  const { productId } = req.params;
+  const userId = req.user.id;
+
+  try {
+    const user = await User.findById(userId);
+    user.favoritos = user.favoritos.filter(fav => fav.toString() !== productId);
+    await user.save();
+    res.json(user.favoritos);
+  } catch (error) {
+    res.status(500).json({ message: 'Error al eliminar favorito' });
+  }
+};
+
 
 module.exports = {
   getAllUsers,
   updateUser,
   deleteUser,
   updateProfile,
-  addFavorite
+  getProfile,
+  addFavorite,
+  removeFavorite
 };
 
 
