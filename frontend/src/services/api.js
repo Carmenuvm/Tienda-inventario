@@ -9,6 +9,7 @@ const api = axios.create({
 // Interceptor para agregar el token a las solicitudes
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token'); // Obtener el token del almacenamiento local
+  console.log("TOKEN ENVIADO:", token); // 🛠️ Verifica si el token está disponible
   if (token) {
     config.headers.Authorization = `Bearer ${token}`; // Agregar el token al encabezado
   }
@@ -47,8 +48,14 @@ export const getProfile = async () => {
   };
 
 // Función para actualizar el perfil
-export const updateProfile = async (userData) => {
-  return await api.put('/users/profile', userData);
+export const updateProfile = async (data) => {
+  const response = await axios.put('/api/users/profile', data, {
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('token')}`,
+      'Content-Type': 'application/json'
+    }
+  });
+  return response.data;
 };
 
 // Funcion para add favoritos

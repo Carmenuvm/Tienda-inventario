@@ -5,6 +5,7 @@ import api from '../services/api';
 import { getCategories, getProfile } from '../services/api';
 import { Modal } from 'react-bootstrap';
 import { toast } from 'react-toastify'; // Importar toast 
+import { bufferToDataURL } from '../utils/images';
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
@@ -96,13 +97,8 @@ const ProductList = () => {
   };
 
   const handleImageClick = (imageData) => {
-    setSelectedImage(bufferToBase64(imageData));
+    setSelectedImage(bufferToDataURL(imageData));
     setShowImageModal(true);
-  };
-
-  const bufferToBase64 = (buffer) => {
-    const binary = new Uint8Array(buffer).reduce((data, byte) => data + String.fromCharCode(byte), '');
-    return `data:image/jpeg;base64,${btoa(binary)}`;
   };
 
   const filteredProducts = products.filter((product) => {
@@ -146,7 +142,7 @@ const ProductList = () => {
             <div className="card h-100 shadow-sm">
               {product.imagen && (
                 <img
-                  src={bufferToBase64(product.imagen.data)}
+                  src={bufferToDataURL(product.imagen)}
                   alt={product.nombre}
                   className="card-img-top img-fluid cursor-pointer"
                   style={{ 
@@ -154,7 +150,7 @@ const ProductList = () => {
                     objectFit: 'cover',
                     cursor: 'pointer'
                   }}
-                  onClick={() => handleImageClick(product.imagen.data)}
+                  onClick={() => handleImageClick(product.imagen)}
                 />
               )}
               
