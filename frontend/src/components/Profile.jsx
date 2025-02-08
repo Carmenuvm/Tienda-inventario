@@ -205,7 +205,7 @@ const Profile = () => {
             <div key={producto._id} className="product-card">
               <div className="image-container">
                 <img
-                  src={bufferToDataURL(producto.imagen, producto.contentType)}
+                  src={bufferToDataURL(producto.imagen)}
                   alt={producto.nombre}
                   className="product-image"
                   onError={(e) => e.target.src = '/imagen-fallback.jpg'}

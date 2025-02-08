@@ -1,6 +1,19 @@
-export const bufferToDataURL = (imageBuffer, contentType = 'image/jpeg') => {
-    if (!imageBuffer?.data) return '';
-    const bytes = new Uint8Array(imageBuffer.data);
-    const base64 = btoa(String.fromCharCode(...bytes));
-    return `data:${contentType};base64,${base64}`;
-  };
+// Versión final probada
+export const bufferToDataURL = (imagen) => {
+  // Validación mejorada
+  if (!imagen || !imagen.data || !Array.isArray(imagen.data)) {
+    console.error('Estructura inválida:', imagen);
+    return '';
+  }
+
+  try {
+    const uint8 = new Uint8Array(imagen.data);
+    const blob = new Blob([uint8], { 
+      type: imagen.contentType || 'image/jpeg' // Fallback seguro
+    });
+    return URL.createObjectURL(blob);
+  } catch (error) {
+    console.error('Error de conversión:', error);
+    return '';
+  }
+};

@@ -23,19 +23,7 @@ const ProtectedRoute = ({ children }) => {
 const App = () => {
   return (
     <Router>
-      {}
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
-      
+      <ToastContainer position="bottom-right" autoClose={3000} />
       <div className="d-flex flex-column min-vh-100">
         <Navbar />
         <div className="flex-grow-1">

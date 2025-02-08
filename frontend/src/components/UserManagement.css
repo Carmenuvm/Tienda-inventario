@@ -1,0 +1,98 @@
+.user-management-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 1rem;
+}
+
+.users-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.users-table th,
+.users-table td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.users-table th {
+  background-color: #f7fafc;
+  font-weight: 600;
+}
+
+.users-table tr:hover {
+  background-color: #f8fafc;
+}
+
+select {
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #cbd5e0;
+}
+
+.delete-button {
+  background-color: #feb2b2;
+  color: #c53030;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.delete-button:hover {
+  background-color: #fc8181;
+}
+
+/* Estilos para la notificación de confirmación */
+.custom-toast {
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.confirm-toast {
+  text-align: center;
+}
+
+.confirm-toast p {
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  color: #2d3748;
+}
+
+.toast-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.confirm-button {
+  background-color: #feb2b2;
+  color: #c53030;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.confirm-button:hover {
+  background-color: #fc8181;
+}
+
+.cancel-button {
+  background-color: #e2e8f0;
+  color: #4a5568;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.cancel-button:hover {
+  background-color: #cbd5e0;
+}
