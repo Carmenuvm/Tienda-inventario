@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaStar, FaEdit, FaTrash } from 'react-icons/fa';
 import api from '../services/api';
-import { getCategories, getProfile } from '../services/api';
+import { getCategories, getProfile, removeFromFavorites } from '../services/api';
 import { Modal } from 'react-bootstrap';
 import { toast } from 'react-toastify'; // Importar toast 
 import { bufferToDataURL } from '../utils/images';
@@ -99,6 +99,21 @@ const ProductList = () => {
   const handleImageClick = (imageData) => {
     setSelectedImage(bufferToDataURL(imageData));
     setShowImageModal(true);
+  };
+
+  const handleRemoveFavorite = async (productId) => {
+    try {
+      console.log('Intentando eliminar:', productId); // Debug
+      const response = await removeFromFavorites(productId);
+      console.log('Respuesta:', response); // Debug
+      
+      // Actualiza la lista sin recargar
+      setProducts(prev => prev.filter(p => p._id !== productId));
+      toast.success('Producto eliminado de favoritos');
+    } catch (error) {
+      console.error('Error:', error.response?.data || error.message); // Debug
+      toast.error('Error al eliminar de favoritos');
+    }
   };
 
   const filteredProducts = products.filter((product) => {

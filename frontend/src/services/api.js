@@ -64,12 +64,16 @@ export const addFavorite = (productId) => {
   
 //Funcion para eliminar de favoritos
 export const removeFromFavorites = async (productId) => {
-  const response = await axios.delete(`/api/users/favorites/${productId}`, {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`
-    }
-  });
-  return response.data;
+  try {
+    const response = await axios.delete(`/api/users/favorites/${productId}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error.message;
+  }
 };
 
 export default api;
