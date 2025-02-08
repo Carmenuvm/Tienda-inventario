@@ -1,9 +1,10 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { FaHome, FaPlus, FaUser, FaUsers, FaSignOutAlt } from 'react-icons/fa';
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const isAuthenticated = !!localStorage.getItem('token'); // Verificar autenticación
+  const isAuthenticated = !!localStorage.getItem('token'); //// Verificar autenticación
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -11,13 +12,13 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-success">
       <div className="container-fluid">
         <Link to="/" className="navbar-brand">
-          Tiendita
+          <span className="h4">🛍️ Tiendita</span>
         </Link>
         
-        {isAuthenticated && ( // Solo mostrar contenido si está autenticado
+        {isAuthenticated && ( //// Solo mostrar contenido si está autenticado
           <>
             <button
               className="navbar-toggler"
@@ -32,33 +33,42 @@ const Navbar = () => {
             </button>
             
             <div className="collapse navbar-collapse" id="navbarNav">
-              <ul className="navbar-nav">
+              <ul className="navbar-nav me-auto">
                 <li className="nav-item">
                   <Link to="/" className="nav-link">
+                    <FaHome className="me-2" />
                     Inicio
                   </Link>
                 </li>
                 <li className="nav-item">
                   <Link to="/add" className="nav-link">
+                    <FaPlus className="me-2" />
                     Agregar Producto
                   </Link>
                 </li>
                 <li className="nav-item">
                   <Link to="/profile" className="nav-link">
+                    <FaUser className="me-2" />
                     Mi Perfil
                   </Link>
                 </li>
                 <li className="nav-item">
                   <Link to="/user-management" className="nav-link">
-                    Gestión de Usuarios
+                    <FaUsers className="me-2" />
+                    Usuarios
                   </Link>
                 </li>
-                <li className="nav-item">
-                  <button onClick={handleLogout} className="nav-link btn btn-link">
-                    Cerrar Sesión
-                  </button>
-                </li>
               </ul>
+              
+              <div className="d-flex align-items-center">
+                <button 
+                  onClick={handleLogout} 
+                  className="btn btn-outline-light"
+                >
+                  <FaSignOutAlt className="me-2" />
+                  Cerrar Sesión
+                </button>
+              </div>
             </div>
           </>
         )}
