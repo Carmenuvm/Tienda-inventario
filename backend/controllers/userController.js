@@ -1,5 +1,6 @@
 // controllers/userController.js
 const User = require('../models/User');
+const Product = require('../models/Product');
 
 
 // Obtener todos los usuarios (solo admin)
@@ -111,6 +112,47 @@ const removeFavorite = async (req, res) => {
   }
 };
 
+const removeFromFavorites = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const productId = req.params.productId;
+
+    console.log('Eliminando favorito:', { userId, productId }); // Debug
+
+    // Verifica que el producto exista
+    const product = await Product.findById(productId);
+    if (!product) {
+      return res.status(404).json({ 
+        success: false,
+        message: 'Producto no encontrado' 
+      });
+    }
+
+    // Elimina el producto de favoritos
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { $pull: { favoritos: productId } },
+      { new: true }
+    ).select('-password');
+
+    console.log('Usuario actualizado:', updatedUser); // Debug
+
+    res.json({
+      success: true,
+      message: 'Producto eliminado de favoritos',
+      user: updatedUser
+    });
+
+  } catch (error) {
+    console.error('Error en el controlador:', error); // Debug
+    res.status(500).json({
+      success: false,
+      message: 'Error al eliminar de favoritos',
+      error: error.message
+    });
+  }
+};
+
 
 module.exports = {
   getAllUsers,
@@ -119,7 +161,8 @@ module.exports = {
   updateProfile,
   getProfile,
   addFavorite,
-  removeFavorite
+  removeFavorite,
+  removeFromFavorites
 };
 
 
